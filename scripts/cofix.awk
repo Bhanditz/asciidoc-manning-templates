@@ -1,10 +1,10 @@
-/\<\/example\>/ {
+/<\/example>/ {
     getline 
-    if (match($0, /\<calloutlist\>/)) {
+    if (match($0, /<calloutlist>/)) {
         print "<!-- begin cofix -->" 
-        while (!match($0, /\<\/calloutlist\>/)) {
+        while (!match($0, /<\/calloutlist>/)) {
             print
-            getline
+            if (getline <= 0) break
         }
         print "</calloutlist>"
         print "</example>"
@@ -16,13 +16,14 @@
     }
     next
 }
-/\<\/informalexample\>/ {
+/<\/informalexample>/ {
+    print "<!-- informal example -->"
     getline
-    if (match($0, /\<calloutlist\>/)) {
+    if (match($0, /<calloutlist>/)) {
         print "<!-- begin cofix -->"
-        while (!match($0, /\<\/calloutlist\>/)) {
+        while (!match($0, /<\/calloutlist>/)) {
             print
-            getline
+            if (getline <= 0) break
         }
         print "</calloutlist>"
         print "</informalexample>"
